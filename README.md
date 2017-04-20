@@ -55,15 +55,16 @@ ProjectAuthenticationProvider - main logic for logining process
 1) If case we need registration - need just add new member to table "Member"
 2) Unique constrain can be deleted in case system has to support close or remove account
 3) After upload we return duration in message but any time we can extract it in difference field
-4) Was used Xuggler (http://www.xuggle.com/xuggler) to extract a duration on the server side.
-5) I didn't use roles for user - can be implemented later.
-6) I keep sessions in the memory - can be migrated to database + generate UDID and keep it in a cookie 
+4) Was used third party library to extract a meta from a video file.
+5) I didn't use roles for user - can be implemented later. 
  
 #####How many time spend to task? 4 hours 30 minutes
 
-#####What we need to migrate to Amazon
+#####What we need to HLS
 S2 - Small instance 
     install: Java-8, NGinx, Tomcat-7.75 or later, PostgreSQL-9, PGBouncer (for port 6432)
-S3 - to keep uploded files
+Elastic Transcoder to change quality of video depend to quality of net
+S3 - to keep uploded files (done)
+
 RDS - for future
 Benchtalk - for future 
