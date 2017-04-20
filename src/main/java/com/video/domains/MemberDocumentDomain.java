@@ -19,6 +19,9 @@ public class MemberDocumentDomain extends SimpleEntity {
     private String fileName;
     private Long duration;
     private Integer bitRate;
+    private Float frameRate;
+    private Integer frameWidth;
+    private Integer frameHeight;
 
     @Override
     public String getEntityKey() {
@@ -59,5 +62,41 @@ public class MemberDocumentDomain extends SimpleEntity {
 
     public void setBitRate(Integer bitRate) {
         this.bitRate = bitRate;
+    }
+
+    public void setMember(MemberDomain member) {
+        this.member = member;
+    }
+
+    public Float getFrameRate() {
+        return frameRate;
+    }
+
+    public void setFrameRate(Float frameRate) {
+        this.frameRate = frameRate;
+    }
+
+    public Integer getFrameWidth() {
+        return frameWidth;
+    }
+
+    public void setFrameWidth(Integer frameWidth) {
+        this.frameWidth = frameWidth;
+    }
+
+    public Integer getFrameHeight() {
+        return frameHeight;
+    }
+
+    public void setFrameHeight(Integer frameHeight) {
+        this.frameHeight = frameHeight;
+    }
+
+    public String getFrameSize() {
+        if (this.frameHeight != null
+            && this.frameWidth != null) {
+            return this.frameWidth + " x " + this.frameHeight;
+        }
+        return "";
     }
 }

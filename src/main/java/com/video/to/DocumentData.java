@@ -8,6 +8,9 @@ public class DocumentData {
     private String name;
     private Long duraton;
     private Integer bitRate;
+    private Float frameRate;
+    private Integer frameWidth;
+    private Integer frameHeight;
 
     public void setMemberId(Long memberId) {
         this.memberId = memberId;
@@ -39,5 +42,29 @@ public class DocumentData {
 
     public Integer getBitRate() {
         return bitRate;
+    }
+
+    public void setFrameRate(Float frameRate) {
+        this.frameRate = frameRate;
+    }
+
+    public Float getFrameRate() {
+        return frameRate;
+    }
+
+    public void setFrameWidth(Integer frameWidth) {
+        this.frameWidth = frameWidth;
+    }
+
+    public Integer getFrameWidth() {
+        return frameWidth;
+    }
+
+    public void setFrameHeight(Integer frameHeight) {
+        this.frameHeight = frameHeight;
+    }
+
+    public Integer getFrameHeight() {
+        return frameHeight;
     }
 }

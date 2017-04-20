@@ -1,8 +1,11 @@
 package com.video.spring.filters;
 
+import com.video.services.MemberService;
+import com.video.spring.to.AuthDetails;
 import com.video.spring.tokens.ProjectAuthenticationToken;
 import com.video.utils.DG;
 import com.video.utils.StrUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -25,6 +28,8 @@ public final class ProjectAuthenticationProcessingFilter extends AbstractAuthent
     private String usernameParameter = SPRING_SECURITY_FORM_USERNAME_KEY;
     private String passwordParameter = SPRING_SECURITY_FORM_PASSWORD_KEY;
 
+    @Autowired
+    private MemberService memberService;
 
     public boolean postOnly = true;
 
@@ -63,6 +68,11 @@ public final class ProjectAuthenticationProcessingFilter extends AbstractAuthent
 
         ProjectAuthenticationToken authResult = (ProjectAuthenticationToken) this.getAuthenticationManager().authenticate(authRequest);
 
+        if (authResult != null
+            && authResult.isAuthenticated()
+            && authResult.getDetails() instanceof AuthDetails) {
+            memberService.createSession((AuthDetails) authResult.getDetails(), request, response);
+        }
         return authResult;
     }
 

@@ -58,7 +58,6 @@ public final class ProjectSecurityContextPersistenceFilter extends GenericFilter
         SecurityContext contextBeforeChainExecution = repo.loadContext(holder);
 
         try {
-            //todo we can read session from cookie if we will keet it in database
             if(!memberService.processSessionId(contextBeforeChainExecution, response, request)){
                 SecurityContextHolder.clearContext();
             }

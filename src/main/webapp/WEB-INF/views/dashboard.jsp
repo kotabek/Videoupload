@@ -14,6 +14,7 @@
 </head>
 <body>
 <div class="container">
+    <a class="pull-right" href="/j_spring_security_logout">Logout</a>
     <h1>Please choose MP4 file</h1>
 
     <form method="POST"
@@ -53,6 +54,7 @@
                     type: 'POST',
                     success: completeHandler = function (data) {
                         alert(data.message);
+                        window.location.reload();
                     },
                     error: errorHandler = function () {
                         alert("Something went wrong!");
@@ -79,6 +81,31 @@
             }
         }
     </script>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Duration (seconds)</th>
+                <td>BitRate</td>
+                <td>FrameRate</td>
+                <td>FrameSize</td>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="doc" items="${documents}">
+                <tr>
+                    <td>${doc.id}</td>
+                    <td>${doc.fileName}</td>
+                    <td>${doc.duration}</td>
+                    <td>${doc.bitRate}</td>
+                    <td>${doc.frameRate}</td>
+                    <td>${doc.frameSize}</td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+
 </div>
 
 <c:import url="base/footer.jsp"/>

@@ -13,4 +13,6 @@ public interface MemberService {
     boolean processSessionId(SecurityContext contextBeforeChainExecution, HttpServletResponse response, HttpServletRequest request);
 
     AuthDetails authenticateMember(String username, String password);
+
+    void createSession(AuthDetails details, HttpServletRequest request, HttpServletResponse response);
 }

@@ -224,11 +224,18 @@
             <artifactId>commons-pool</artifactId>
             <version>1.6</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>xuggle</groupId>
             <artifactId>xuggle-xuggler</artifactId>
             <version>5.4</version>
+        </dependency>-->
+        <dependency>
+            <groupId>video</groupId>
+            <artifactId>jave</artifactId>
+            <version>1.0.2</version>
         </dependency>
+
+
 
         <!-- Logging -->
         <dependency>

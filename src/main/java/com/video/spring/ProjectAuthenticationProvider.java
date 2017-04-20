@@ -34,7 +34,6 @@ public final class ProjectAuthenticationProvider implements AuthenticationProvid
         String password = (String) authentication.getCredentials();
 
         final AuthDetails authDetail = memberService.authenticateMember(username, password);
-        //todo here we can generate session and keet it in database
 
         ProjectAuthenticationToken result;
 
