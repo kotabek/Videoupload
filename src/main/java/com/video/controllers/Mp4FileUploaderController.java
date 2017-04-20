@@ -1,7 +1,9 @@
 package com.video.controllers;
 
 import com.video.services.DocumentService;
+import com.video.services.S3Service;
 import com.video.to.DocumentData;
+import com.video.to.FileTO;
 import com.video.to.UploadResponse;
 import com.video.utils.DG;
 import com.video.utils.SecurityContextUtils;
@@ -27,6 +29,8 @@ import java.io.File;
 public class Mp4FileUploaderController {
     @Autowired
     private DocumentService documentService;
+    @Autowired
+    private S3Service s3Service;
 
     /**
      * Upload Multipart file with duration
@@ -44,7 +48,8 @@ public class Mp4FileUploaderController {
         }
 
         String message = null;
-        boolean success = false;
+        DocumentData documentData = null;
+        boolean success = true;
         try {
             final String path = ((DiskFileItem) ((CommonsMultipartFile) file).getFileItem()).getStoreLocation().getPath();
             Encoder encoder = new Encoder();
@@ -57,11 +62,12 @@ public class Mp4FileUploaderController {
             if (duration > 600) {
                 message = "Your file was longe than 10 minutes.";
             } else {
+
                 // todo place to upload it to amazon S3
-                DocumentData documentData = new DocumentData();
+                documentData = new DocumentData();
                 documentData.setMemberId(SecurityContextUtils.getMemberId());
                 documentData.setName(DG.getString(file.getOriginalFilename(), "NO_NAME"));
-                documentData.setDuraton(duration);
+                documentData.setDuration(duration);
                 if (vInfo.getBitRate() > 0) {
                     documentData.setBitRate(vInfo.getBitRate());
                 }
@@ -70,8 +76,11 @@ public class Mp4FileUploaderController {
                     documentData.setFrameWidth(vInfo.getSize().getWidth());
                     documentData.setFrameHeight(vInfo.getSize().getHeight());
                 }
+                FileTO fileTO = s3Service.upload(documentData.getName(), ".mp4", file.getContentType(), file.getBytes());
+                documentData.setKey(fileTO.getKey());
+                documentData.setMimeType(fileTO.getMimeType());
+                documentData.setSize(fileTO.getSize());
                 documentService.registerDocument(documentData);
-                message = "You successfully uploaded '" + documentData.getName() + "' with duration = " + duration + " seconds ";
                 success = true;
             }
 
@@ -79,12 +88,14 @@ public class Mp4FileUploaderController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if (message == null) {
+        if (success) {
+            message = "You successfully uploaded '" + documentData.getName() + "' with duration = " + documentData.getDuration() + " seconds ";
+        } else {
             message = "File incorrect or broken. Please try Again";
-            success = false;
         }
-        return new UploadResponse(message, success);
+        UploadResponse response = new UploadResponse(message, success);
+        response.setItem(documentData);
+        return response;
     }
 }
 

@@ -7,6 +7,8 @@ public class UploadResponse {
     private boolean success;
     private String message;
 
+    private DocumentTO item;
+
     public UploadResponse() {
     }
 
@@ -21,5 +23,21 @@ public class UploadResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public DocumentTO getItem() {
+        return item;
+    }
+
+    public void setItem(DocumentTO item) {
+        this.item = item;
     }
 }

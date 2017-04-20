@@ -28,11 +28,14 @@ public class DocumentServiceImpl implements DocumentService {
         MemberDocumentDomain domain = new MemberDocumentDomain();
         domain.setMemberId(data.getMemberId());
         domain.setFileName(data.getName());
-        domain.setDuration(data.getDuraton());
+        domain.setDuration(data.getDuration());
         domain.setBitRate(data.getBitRate());
         domain.setFrameRate(data.getFrameRate());
         domain.setFrameWidth(data.getFrameWidth());
         domain.setFrameHeight(data.getFrameHeight());
+        domain.setS3key(data.getKey());
+        domain.setMimeType(data.getMimeType());
+        domain.setSize(data.getSize());
         memberDocumentDao.save(domain);
     }
 

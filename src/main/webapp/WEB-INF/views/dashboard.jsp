@@ -84,7 +84,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Name</th>
                 <th>Duration (seconds)</th>
                 <td>BitRate</td>
@@ -95,8 +94,7 @@
         <tbody>
             <c:forEach var="doc" items="${documents}">
                 <tr>
-                    <td>${doc.id}</td>
-                    <td>${doc.fileName}</td>
+                    <td><a href="${doc.url}">${doc.name}</a></td>
                     <td>${doc.duration}</td>
                     <td>${doc.bitRate}</td>
                     <td>${doc.frameRate}</td>

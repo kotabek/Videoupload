@@ -1,5 +1,8 @@
 package com.video.domains;
 
+import com.video.to.DocumentTO;
+import com.video.to.FileTO;
+import com.video.utils.DG;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
@@ -22,6 +25,10 @@ public class MemberDocumentDomain extends SimpleEntity {
     private Float frameRate;
     private Integer frameWidth;
     private Integer frameHeight;
+
+    private String s3key;
+    private String mimeType;
+    private Integer size;
 
     @Override
     public String getEntityKey() {
@@ -98,5 +105,50 @@ public class MemberDocumentDomain extends SimpleEntity {
             return this.frameWidth + " x " + this.frameHeight;
         }
         return "";
+    }
+
+    public String getS3key() {
+        return s3key;
+    }
+
+    public void setS3key(String s3key) {
+        this.s3key = s3key;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public int getSize() {
+        return DG.getInt(size);
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public void fillTO(FileTO to) {
+        if (to != null) {
+            to.setKey(this.getS3key());
+            to.setMimeType(this.getMimeType());
+            to.setName(this.getFileName());
+            to.setSize(this.getSize());
+        }
+    }
+
+    public void fillTO(DocumentTO to) {
+        if (to != null) {
+            to.setDuration(this.getDuration());
+            to.setBitRate(this.getBitRate());
+            to.setFrameRate(this.getFrameRate());
+            to.setFrameWidth(this.getFrameWidth());
+            to.setFrameHeight(this.getFrameHeight());
+
+            this.fillTO((FileTO) to);
+        }
     }
 }
