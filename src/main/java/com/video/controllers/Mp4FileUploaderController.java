@@ -1,39 +1,45 @@
 package com.video.controllers;
 
+import com.video.services.DocumentService;
+import com.video.to.DocumentData;
+import com.video.to.UploadResponse;
+import com.video.utils.SecurityContextUtils;
 import com.xuggle.xuggler.IContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by kotabek on 4/20/17.
  */
 @Controller
 public class Mp4FileUploaderController {
+    @Autowired
+    private DocumentService documentService;
+
+    /**
+     * Upload Multipart file with duration
+     *
+     * @param file income data
+     * @return message for client
+     */
     @RequestMapping(value = "/upload-file", method = RequestMethod.POST)
     public
     @ResponseBody
-    Object upload(@RequestParam(value = "file", required = false) MultipartFile file,
-                  RedirectAttributes redirectAttributes,
-                  HttpServletRequest request) {
+    UploadResponse upload(@RequestParam(value = "file", required = false) MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
-            return new HashMap<String, String>() {{
-                put("message", "Please select a file to upload");
-            }};
+            return new UploadResponse("Please select a file to upload", false);
         }
 
-
         String message = null;
+        boolean success = false;
         try {
 
             IContainer container = IContainer.make();
@@ -45,7 +51,14 @@ public class Mp4FileUploaderController {
                 message = "Your file was longe than 10 minutes.";
             } else {
                 // todo place to upload it to amazon S3
-                message = "You successfully uploaded '" + file.getOriginalFilename() + "' with duration = " + duration + " seconds ";
+                DocumentData documentData = new DocumentData();
+                documentData.setMemberId(SecurityContextUtils.getMemberId());
+                documentData.setName(file.getOriginalFilename());
+                documentData.setDuraton(duration);
+                documentData.setBitRate(container.getBitRate());
+                documentService.registerDocument(documentData);
+                message = "You successfully uploaded '" + documentData.getName() + "' with duration = " + duration + " seconds ";
+                success = true;
             }
 
 
@@ -55,10 +68,9 @@ public class Mp4FileUploaderController {
 
         if (message == null) {
             message = "File incorrect or broken. Please try Again";
+            success = false;
         }
-        Map<String, String> result = new HashMap<String, String>();
-        result.put("message", message);
-        return result;
+        return new UploadResponse(message, success);
     }
 }
 

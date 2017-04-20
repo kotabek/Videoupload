@@ -42,3 +42,19 @@ insert into public.members(username, password)
     values('Admin', 'admin');
 
 
+####Spring Security
+
+#####Filters
+ProjectAuthenticationProcessingFilter - for login
+ProjectSecurityContextPersistenceFilter - restore session and update session data (if nessesory)
+
+#####Authentication provider
+ProjectAuthenticationProvider - main logic for logining process
+
+#####Additional
+1) If case we need registration - need just add new member to table "Member"
+2) Unique constrain can be deleted in case system has to support close or remove account
+3) After upload we return duration in message but any time we can extract it in difference field
+4) Was used Xuggler (http://www.xuggle.com/xuggler) to extract a duration on the server side. 
+ 
+#####How many time spend to task? 4 hours 30 minutes

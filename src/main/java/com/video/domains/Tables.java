@@ -5,4 +5,5 @@ package com.video.domains;
  */
 public interface Tables {
     String Member = "members";
+    String MemberDocument = "member_documents";
 }

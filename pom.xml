@@ -269,6 +269,7 @@
         </dependency>
 
         <!-- for compile only, your container should have this -->
+        <!--todo I am using local because maven server doesn't working-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
